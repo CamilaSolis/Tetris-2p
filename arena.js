@@ -20,7 +20,7 @@ class Arena
             for (let x = 0; x < m[y].length; ++x) {
                 if(m[y][x] !== 0 &&
                     (this.matrix[y + o.y] &&
-                    this.matrix[y + o.y][x + o.x]) !== 0) {
+                     this.matrix[y + o.y][x + o.x]) !== 0) {
                         return true
                 }
             }

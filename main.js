@@ -1,8 +1,3 @@
-const canvas = document.getElementById('tetris');
-const context = canvas.getContext('2d');
-
-context.scale(20, 20);
-
 function createPiece(type) {
     if (type === 'T') {
         return [
@@ -50,27 +45,20 @@ function createPiece(type) {
 }
 
 function updateScore() {
-    document.getElementById('score').innerText = player.score;
+    document.getElementById('score').innerText = tetris.player.score;
 }
 
-const colors = [
-    null,
-    '#922b8c',
-    '#fde100',
-    '#f89622',
-    '#015a9c',
-    '#2cace2',
-    '#4fb74b',
-    '#ee2733',
-]
+const tetri = [];
 
-const arena = new Arena (12, 20);
-
-const player = new Player;
-
-const tetris = new Tetris;
-
+const playerElements = document.querySelectorAll('.player');
+[...playerElements]. forEach(element => {
+    const canvas = element.querySelector('canvas');
+    const tetris = new Tetris(canvas);
+    tetri.push(tetris);
+})
+ /*
 document.addEventListener('keydown', event => {
+    const player = tetris.player;
     if (event.keyCode === 37) {
         player.move(-1);
     } else if (event.keyCode === 39) {
@@ -83,3 +71,4 @@ document.addEventListener('keydown', event => {
 });
 
 updateScore();
+*/
