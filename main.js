@@ -27,7 +27,7 @@ function createPiece(type) {
             [0, 5, 0, 0],
             [0, 5, 0, 0],
             [0, 5, 0, 0],
-            [0, 5, 0, 0]
+            [0, 5, 0, 0],
         ];
     } else if (type === 'S') {
         return [
@@ -44,31 +44,42 @@ function createPiece(type) {
     }
 }
 
-function updateScore() {
-    document.getElementById('score').innerText = tetris.player.score;
-}
-
 const tetri = [];
 
 const playerElements = document.querySelectorAll('.player');
-[...playerElements]. forEach(element => {
-    const canvas = element.querySelector('canvas');
-    const tetris = new Tetris(canvas);
+[...playerElements].forEach(element => {
+    const tetris = new Tetris(element);
     tetri.push(tetris);
-})
- /*
-document.addEventListener('keydown', event => {
-    const player = tetris.player;
-    if (event.keyCode === 37) {
-        player.move(-1);
-    } else if (event.keyCode === 39) {
-        player.move(1);
-    } else if (event.keyCode === 40) {
-        player.drop();
-    } else if (event.keyCode === 38) {
-        player.rotate(1);
-    }
 });
 
-updateScore();
-*/
+const keyListener = (event) => {
+    [
+        [65, 68, 83, 87],
+        [37, 39, 40, 38],
+    ].forEach((key, index) => {
+        const player = tetri[index].player;
+        if (event.type === 'keydown'){
+            if (event.keyCode === key[0]) {
+                player.move(-1);
+            } else if (event.keyCode === key[1]) {
+                player.move(1);
+            } else if (event.keyCode === key[3]) {
+                player.rotate(1);
+            }
+        }
+
+        if (event.keyCode === key[2]) {
+            if (event.type === 'keydown') {
+                if (player.dropInterval !== player.DROP_FAST) {
+                    player.drop();
+                    player.dropInterval = player.DROP_FAST;
+                }
+            } else {
+                player.dropInterval = player.DROP_SLOW;
+            }
+        }
+    });
+}
+
+document.addEventListener('keydown', keyListener );
+document.addEventListener('keyup', keyListener );

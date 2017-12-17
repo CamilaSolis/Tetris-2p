@@ -2,11 +2,11 @@ class Arena
 {
     constructor(w, h)
     {
-    const matrix = [];
-    while (h--) {
-        matrix.push(new Array(w).fill(0));
-    }
-    this.matrix = matrix;
+        const matrix = [];
+        while (h--) {
+            matrix.push(new Array(w).fill(0));
+        }
+        this.matrix = matrix;
     }
 
     clear()
@@ -14,9 +14,10 @@ class Arena
         this.matrix.forEach(row => row.fill(0));
     }
 
-    collide(player) {
+    collide(player)
+    {
         const [m, o] = [player.matrix, player.pos];
-        for (let y = 0; y < m.length; y++) {
+        for (let y = 0; y < m.length; ++y) {
             for (let x = 0; x < m[y].length; ++x) {
                 if(m[y][x] !== 0 &&
                     (this.matrix[y + o.y] &&
@@ -39,20 +40,24 @@ class Arena
         });
     }
 
-    sweep() {
+    sweep()
+    {
         let rowCount = 1;
+        let score = 0;
         outer: for (let y = this.matrix.length - 1; y > 0; --y) {
             for (let x = 0; x < this.matrix[y].length; ++x) {
                 if (this.matrix[y][x] === 0) {
                     continue outer;
                 }
             }
+
             const row = this.matrix.splice(y, 1)[0].fill(0);
             this.matrix.unshift(row);
             ++y;
 
-            player.score += rowCount * 10;
+            score += rowCount * 10;
             rowCount *= 2;
         }
+        return score;
     }
 }

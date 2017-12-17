@@ -2,17 +2,33 @@ class Player
 {
     constructor(tetris)
     {
+        this.DROP_SLOW = 1000;
+        this.DROP_FAST = 50;
+
         this.tetris = tetris;
         this.arena = tetris.arena;
 
         this.dropCounter = 0;
-        this.dropInterval = 1000;
+        this.dropInterval = this.DROP_SLOW;
 
         this.pos = {x: 0, y: 0};
         this.matrix = null;
         this.score = 0;
 
         this.reset();
+    }
+
+    drop ()
+    {
+        this.pos.y++;
+        if (this.arena.collide(this)) {
+            this.pos.y--;
+            this.arena.merge(this);
+            this.reset();
+            this.score += this.arena.sweep();
+            this.tetris.updateScore(this.score);
+        }
+        this.dropCounter = 0;
     }
 
     move(dir){
@@ -70,18 +86,6 @@ class Player
         } else {
             matrix.reverse();
         }
-    }
-
-    drop () {
-        this.pos.y++;
-        if (this.arena.collide(this)) {
-            this.pos.y--;
-            this.arena.merge(this);
-            this.reset();
-            this.arena.sweep();
-            updateScore();
-        }
-        this.dropCounter = 0;
     }
 
     update(deltaTime)
