@@ -67,7 +67,6 @@ class Player extends Component {
     }
 
     props.events.on('updateScore', (score) => {
-      console.log(score)
       this.setState({
         score,
       })
